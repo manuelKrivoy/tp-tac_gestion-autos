@@ -1,22 +1,17 @@
 import express from "express";
-import cors from "cors";
-import dotenv from "dotenv";
-
-dotenv.config();
+import { db } from "./config/db.js";
 
 const app = express();
 
-// Middlewares
-app.use(cors());
-app.use(express.json());
-
-// Ruta de prueba
-app.get("/", (req, res) => {
-  res.send("API Taller Vehículos funcionando 🚗");
+app.get("/test-db", async (req, res) => {
+  try {
+    const [rows] = await db.query("SELECT NOW() AS now");
+    res.json({ ok: true, now: rows[0].now });
+  } catch (err) {
+    res.status(500).json({ ok: false, error: err.message });
+  }
 });
 
-// Puerto desde .env o por defecto
-const PORT = process.env.PORT || 4000;
-app.listen(PORT, () => {
-  console.log(`Servidor corriendo en http://localhost:${PORT}`);
+app.listen(4000, () => {
+  console.log("Servidor corriendo en http://localhost:4000");
 });
