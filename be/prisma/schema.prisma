@@ -1,0 +1,47 @@
+datasource db {
+  provider = "mysql"
+  url      = env("DATABASE_URL")
+}
+
+generator client {
+  provider = "prisma-client-js"
+}
+
+model Usuario {
+  id        Int      @id @default(autoincrement())
+  email     String   @unique
+  password  String
+  rol       String   @default("ADMIN")
+  createdAt DateTime @default(now())
+}
+
+model Vehiculo {
+  id               Int       @id @default(autoincrement())
+  marca            String
+  modelo           String
+  anio             Int
+  propietarioNombre String
+  propietarioEmail  String
+  createdAt        DateTime  @default(now())
+  turnos           Turno[]
+}
+
+model Turno {
+  id              Int       @unique@id @default(autoincrement())
+  vehiculoId      Int
+  fechaTurno      DateTime
+  estado          String    @default("PENDIENTE")
+  verificationCode String   @unique
+  createdAt       DateTime  @default(now())
+  vehiculo        Vehiculo  @relation(fields: [vehiculoId], references: [id])
+  revision        Revision?
+}
+
+model Revision {
+  id        Int      @id @default(autoincrement())
+  turnoId   Int      @unique
+  notas     String?
+  estado    String   @default("PROGRAMADA")
+  updatedAt DateTime @updatedAt
+  turno     Turno    @relation(fields: [turnoId], references: [id])
+}
