@@ -9,7 +9,7 @@ export function generarToken(payload) {
 export function verificarToken(token) {
   try {
     return jwt.verify(token, process.env.JWT_SECRET);
-  } catch (error) {
+  } catch {
     return null;
   }
 }

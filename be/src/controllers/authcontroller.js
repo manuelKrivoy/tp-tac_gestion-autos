@@ -5,14 +5,33 @@ import { generarToken } from "../utils/jwt.js";
 const prisma = new PrismaClient();
 
 export async function login(req, res) {
-  const { email, password } = req.body;
+  try {
+    const { email, password } = req.body;
 
-  const usuario = await prisma.usuario.findUnique({ where: { email } });
-  if (!usuario) return res.status(404).json({ error: "Usuario no encontrado" });
+    // 1. Buscar usuario
+    const usuario = await prisma.usuario.findUnique({
+      where: { email },
+    });
 
-  const esValido = await bcrypt.compare(password, usuario.password);
-  if (!esValido) return res.status(401).json({ error: "Contraseña incorrecta" });
+    if (!usuario) {
+      return res.status(404).json({ error: "Usuario no encontrado" });
+    }
 
-  const token = generarToken({ id: usuario.id, email: usuario.email, rol: usuario.rol });
-  res.json({ token });
+    // 2. Verificar contraseña
+    const esValido = await bcrypt.compare(password, usuario.password);
+    if (!esValido) {
+      return res.status(401).json({ error: "Contraseña incorrecta" });
+    }
+
+    // 3. Generar token
+    const token = generarToken({
+      id: usuario.id,
+      email: usuario.email,
+      rol: usuario.rol,
+    });
+
+    res.json({ token });
+  } catch (err) {
+    res.status(500).json({ error: "Error en login", detalle: err.message });
+  }
 }
