@@ -1,17 +1,22 @@
 import express from "express";
-import { db } from "./config/db.js";
+import cors from "cors";
+import dotenv from "dotenv";
+import adminRoutes from "./routes/adminRoutes.js";
+import { login } from "./controllers/authController.js";
 
+dotenv.config();
 const app = express();
 
-app.get("/test-db", async (req, res) => {
-  try {
-    const [rows] = await db.query("SELECT NOW() AS now");
-    res.json({ ok: true, now: rows[0].now });
-  } catch (err) {
-    res.status(500).json({ ok: false, error: err.message });
-  }
-});
+app.use(cors());
+app.use(express.json());
 
-app.listen(4000, () => {
-  console.log("Servidor corriendo en http://localhost:4000");
+// login público
+app.post("/auth/login", login);
+
+// rutas protegidas
+app.use("/admin", adminRoutes);
+
+const PORT = process.env.PORT || 4000;
+app.listen(PORT, () => {
+  console.log(`Servidor corriendo en http://localhost:${PORT}`);
 });
