@@ -1,15 +1,75 @@
 import express from "express";
-import { authMiddleware } from "../middleware/auth.js";
 import { PrismaClient } from "@prisma/client";
+import { authMiddleware } from "../middleware/auth.js";
 
 const prisma = new PrismaClient();
 const router = express.Router();
 
-// GET /admin/vehiculos
-router.get("/vehiculos", authMiddleware, async (req, res) => {
+// Todos los endpoints aquí usan JWT
+router.use(authMiddleware);
+
+// --- Vehículos ---
+
+// Listar vehículos
+router.get("/vehiculos", async (req, res) => {
   try {
-    const vehiculos = await prisma.vehiculo.findMany();
+    const vehiculos = await prisma.vehiculo.findMany({ include: { turnos: true } });
     res.json(vehiculos);
+  } catch (err) {
+    res.status(500).json({ error: err.message });
+  }
+});
+
+// Crear vehículo (opcional, ya que se crean al pedir turnos)
+router.post("/vehiculos", async (req, res) => {
+  try {
+    const { marca, modelo, anio, propietarioNombre, propietarioEmail } = req.body;
+    const vehiculo = await prisma.vehiculo.create({
+      data: { marca, modelo, anio, propietarioNombre, propietarioEmail },
+    });
+    res.status(201).json(vehiculo);
+  } catch (err) {
+    res.status(500).json({ error: err.message });
+  }
+});
+
+// --- Turnos ---
+
+// Listar todos los turnos
+router.get("/appointments", async (req, res) => {
+  try {
+    const turnos = await prisma.turno.findMany({
+      include: { vehiculo: true, revision: true },
+    });
+    res.json(turnos);
+  } catch (err) {
+    res.status(500).json({ error: err.message });
+  }
+});
+
+// Actualizar estado de un turno
+router.patch("/appointments/:id", async (req, res) => {
+  try {
+    const { id } = req.params;
+    const { estado } = req.body;
+
+    const turno = await prisma.turno.update({
+      where: { id: Number(id) },
+      data: { estado },
+    });
+
+    res.json(turno);
+  } catch (err) {
+    res.status(500).json({ error: err.message });
+  }
+});
+
+// Eliminar un turno
+router.delete("/appointments/:id", async (req, res) => {
+  try {
+    const { id } = req.params;
+    await prisma.turno.delete({ where: { id: Number(id) } });
+    res.json({ message: "Turno eliminado" });
   } catch (err) {
     res.status(500).json({ error: err.message });
   }
