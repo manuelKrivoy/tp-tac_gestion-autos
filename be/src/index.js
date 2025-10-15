@@ -18,7 +18,7 @@ app.post("/auth/login", login);
 app.use("/admin", adminRoutes);
 
 // rutas públicas
-app.use("/public", publicRoutes);
+app.use("/api", publicRoutes);
 
 const PORT = process.env.PORT;
 app.listen(PORT, () => {

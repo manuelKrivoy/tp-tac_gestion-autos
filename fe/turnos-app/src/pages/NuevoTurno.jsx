@@ -26,6 +26,7 @@ export default function NuevoTurno() {
     propietarioNombre: "",
     propietarioEmail: "",
     fechaTurno: "",
+    detalle: "",
   });
   const [result, setResult] = useState(null);
   const [loading, setLoading] = useState(false);
@@ -36,7 +37,7 @@ export default function NuevoTurno() {
     setForm((f) => ({
       ...f,
       marca: e.target.value,
-      modelo: "", // Reset modelo al cambiar marca
+      modelo: "",
     }));
   };
 
@@ -48,6 +49,7 @@ export default function NuevoTurno() {
       const { data } = await api.post("/api/appointments", {
         ...form,
         anio: Number(form.anio),
+        detalle: form.detalle,
       });
       setResult({ ok: true, code: data.verificationCode });
     } catch (err) {
@@ -86,7 +88,7 @@ export default function NuevoTurno() {
             <label className="text-sm text-gray-600 mb-2 block font-semibold">Modelo</label>
             <select
               name="modelo"
-              className="w-full border-gray-300 rounded-lg shadow focus:border-indigo-500 focus:ring-indigo-500 px-3 py-2 transition"
+              className="w-full border-gray-300 rounded-lg shadow focus:border-indigo-500 focus:ring-indigo-500 px-3 py-2 transition disabled:opacity-50"
               onChange={onChange}
               required
               value={form.modelo}
@@ -149,9 +151,23 @@ export default function NuevoTurno() {
             />
           </div>
         </div>
+        <div>
+          <label className="text-sm text-gray-600 mb-2 block font-semibold">
+            Detalle <span className="text-gray-400">(explica qué requiere el auto)</span>
+          </label>
+          <textarea
+            name="detalle"
+            className="w-full border-gray-300 rounded-lg shadow focus:border-indigo-500 focus:ring-indigo-500 px-3 py-2 transition"
+            onChange={onChange}
+            required
+            value={form.detalle}
+            rows={3}
+            placeholder="Ej: cambio de aceite, etc."
+          />
+        </div>
         <button
           disabled={loading}
-          className="w-full inline-flex items-center justify-center px-4 py-2 rounded-lg bg-gradient-to-r from-indigo-600 to-indigo-500 text-white font-semibold hover:from-indigo-500 hover:to-indigo-400 disabled:opacity-50 transition"
+          className="w-full inline-flex items-center justify-center px-4 py-2 rounded-lg bg-gradient-to-r from-indigo-600 to-indigo-500 text-white font-semibold hover:from-indigo-500 cursor-pointer hover:to-indigo-400 disabled:opacity-50 transition"
         >
           {loading ? (
             <span className="flex items-center gap-2">

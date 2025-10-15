@@ -7,7 +7,7 @@ const router = express.Router();
 
 router.post("/appointments", async (req, res) => {
   try {
-    const { marca, modelo, anio, propietarioNombre, propietarioEmail, fechaTurno } = req.body;
+    const { marca, modelo, anio, propietarioNombre, propietarioEmail, fechaTurno, detalle } = req.body;
 
     // 1. Crear vehículo
     const vehiculo = await prisma.vehiculo.create({
@@ -23,6 +23,7 @@ router.post("/appointments", async (req, res) => {
         vehiculoId: vehiculo.id,
         fechaTurno: new Date(fechaTurno),
         verificationCode,
+        detalle: detalle || "",
       },
     });
 

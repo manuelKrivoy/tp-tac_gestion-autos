@@ -34,6 +34,7 @@ model Turno {
   verificationCode String   @unique
   createdAt       DateTime  @default(now())
   vehiculo        Vehiculo  @relation(fields: [vehiculoId], references: [id])
+  detalle          String?
   revision        Revision?
 }
 
