@@ -1,0 +1,71 @@
+/* src/styles/ui.css */
+@reference "../App.css";
+
+/* opcional pero recomendable: agrupar en capas */
+@layer components {
+  .btn {
+    @apply inline-flex items-center justify-center px-4 py-2.5 rounded-xl font-medium
+           transition bg-indigo-500 text-white hover:bg-indigo-400 active:bg-indigo-600;
+  }
+  .btn-ghost {
+    @apply inline-flex items-center justify-center px-4 py-2.5 rounded-xl font-medium
+           border border-slate-700 text-slate-200 hover:border-slate-600;
+  }
+  .input {
+    @apply w-full bg-slate-800 border border-slate-700 rounded-xl px-3 py-2.5 text-slate-100
+           placeholder:text-slate-400 outline-none focus:ring-2 focus:ring-indigo-500 focus:border-indigo-500;
+  }
+  .label {
+    @apply text-sm text-slate-300 mb-1;
+  }
+  .card {
+    @apply bg-slate-900 border border-slate-700 rounded-2xl p-5 shadow-xl;
+  }
+  .card-hover {
+    @apply transition-transform hover:-translate-y-0.5;
+  }
+}
+
+@layer utilities {
+  .h1 {
+    @apply text-3xl md:text-4xl font-bold tracking-tight;
+  }
+  .h2 {
+    @apply text-xl md:text-2xl font-semibold;
+  }
+  .muted {
+    @apply text-sm text-slate-400;
+  }
+
+  @layer utilities {
+    .badge {
+      @apply inline-flex items-center px-2.5 py-0.5 rounded-full text-xs font-medium border;
+    }
+
+    .badge-pend {
+      @apply inline-flex items-center px-2.5 py-0.5 rounded-full text-xs font-medium border bg-amber-900 text-amber-200 border-amber-700;
+    }
+    .badge-rev {
+      @apply inline-flex items-center px-2.5 py-0.5 rounded-full text-xs font-medium border bg-sky-900 text-sky-200 border-sky-700;
+    }
+    .badge-ok {
+      @apply inline-flex items-center px-2.5 py-0.5 rounded-full text-xs font-medium border bg-emerald-900 text-emerald-200 border-emerald-700;
+    }
+    .badge-x {
+      @apply inline-flex items-center px-2.5 py-0.5 rounded-full text-xs font-medium border bg-red-900 text-red-200 border-red-700;
+    }
+  }
+
+  .navbar {
+    @apply sticky top-0 z-20 bg-slate-900 border-b border-slate-800;
+  }
+  .nav-wrap {
+    @apply max-w-5xl mx-auto h-14 px-4 flex items-center justify-between;
+  }
+  .nav-link {
+    @apply px-3 py-2 rounded-xl text-slate-300 hover:text-white hover:bg-slate-800 transition;
+  }
+  .nav-link-active {
+    @apply text-white bg-slate-800;
+  }
+}
