@@ -20,6 +20,15 @@ const MARCAS_MODELOS = {
   Kia: ["K3", "Cerato", "Sportage", "Sorento"],
 };
 
+// Helper para obtener la fecha de hoy en formato YYYY-MM-DD
+function getTodayDateString() {
+  const today = new Date();
+  const yyyy = today.getFullYear();
+  const mm = String(today.getMonth() + 1).padStart(2, "0");
+  const dd = String(today.getDate()).padStart(2, "0");
+  return `${yyyy}-${mm}-${dd}`;
+}
+
 export default function NuevoTurno() {
   const [form, setForm] = useState({
     marca: "",
@@ -62,6 +71,7 @@ export default function NuevoTurno() {
   };
 
   const modelos = form.marca ? MARCAS_MODELOS[form.marca] || [] : [];
+  const minDate = getTodayDateString();
 
   return (
     <section className="max-w-xl mx-auto grid gap-7 py-8">
@@ -127,6 +137,7 @@ export default function NuevoTurno() {
               onChange={onChange}
               required
               value={form.fechaTurno}
+              min={minDate}
             />
           </div>
           <div>

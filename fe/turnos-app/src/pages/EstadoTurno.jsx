@@ -78,7 +78,7 @@ export default function EstadoTurno() {
             </span>
           </div>
           <p className="text-gray-700">
-            <b className="text-indigo-600">Fecha:</b> {new Date(data.value.fecha).toLocaleString()}
+            <b className="text-indigo-600">Fecha:</b> {data.value.fecha}
           </p>
           <p className="text-gray-700">
             <b className="text-indigo-600">Vehículo:</b> {data.value.vehiculo.marca} {data.value.vehiculo.modelo} (
