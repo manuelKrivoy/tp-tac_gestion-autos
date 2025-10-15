@@ -11,11 +11,13 @@ const MARCAS_MODELOS = {
   Fiat: ["Uno", "Palio", "Cronos", "Toro", "500", "Strada"],
   Honda: ["Civic", "Fit", "HR-V", "CR-V", "City"],
   Nissan: ["March", "Versa", "Sentra", "Frontier", "Kicks"],
-  Hyundai: ["i10", "i20", "Creta", "Tucson", "Santa Fe"],
-  Citroën: ["C3", "C4", "Berlingo", "C5 Aircross"],
+  Hyundai: ["HB20", "Creta", "Tucson", "Santa Fe"],
+  Citroen: ["C3", "C4", "Berlingo", "C5 Aircross"],
   Mercedes: ["Clase A", "Clase C", "Clase E", "GLA", "GLC"],
   BMW: ["Serie 1", "Serie 3", "Serie 5", "X1", "X3"],
   Audi: ["A1", "A3", "A4", "Q2", "Q5"],
+  Jeep: ["Renegade", "Compass", "Grand Cherokee", "Commander"],
+  Kia: ["K3", "Cerato", "Sportage", "Sorento"],
 };
 
 export default function NuevoTurno() {

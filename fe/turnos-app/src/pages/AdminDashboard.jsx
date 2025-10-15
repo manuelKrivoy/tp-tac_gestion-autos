@@ -93,6 +93,9 @@ export default function AdminDashboard() {
                     <div className="text-sm text-indigo-600">
                       Estado: <span className="font-bold">{v.turnos[0].estado}</span>
                     </div>
+                    <div className="text-sm text-indigo-600">
+                      Detalle: <span className="font-normal">{v.turnos[0].detalle || "N/A"}</span>
+                    </div>
                     <div className="text-xs text-indigo-400">
                       Código de verificación: {v.turnos[0].verificationCode}
                     </div>
