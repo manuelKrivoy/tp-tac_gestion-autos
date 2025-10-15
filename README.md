@@ -68,7 +68,8 @@ tp-tac_gestion-autos/
 
 ### Frontend (fe/)
 
-- _Por implementar - Puede ser React, Vue, Angular, etc._
+- **Herramientas**: Vite
+- **Estilos**: Tailwind CSS
 
 ### Base de Datos
 
@@ -123,6 +124,6 @@ tp-tac_gestion-autos/
 │       ├── 📁 config/        # Configuraciones
 │       ├── 📁 utils/         # Funciones auxiliares
 │       └── 📄 index.js      # Punto de entrada del servidor
-└── 🎨 fe/                   # Frontend (por implementar)
+└── 🎨 fe/                   # Frontend
     └── [Interfaz de usuario]
 ```
