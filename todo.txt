@@ -1,4 +1,21 @@
-mejorar admin FE -> sacar opcion volver, que rediriga al admin/dashboard si ya estas logeado y vas a admin/login
+FE->
+ mejorar admin FE -> sacar opcion volver, que rediriga al admin/dashboard si ya estas logeado y vas a admin/login
 
+
+FE/BE->
 mejorar CRUD de admin/dashboard
+
+
+FE/BE->
+agregar hora turno / que no pueda haber dos turnos misma hora misma fecha
+
+
+BE->
+agregar ep adicionales
+
+FE/BE->
+Terminar funcionalidad de revision
+
+FE-> 
+Agregar ver historial // turnos con estados completados no debe listarse
 
