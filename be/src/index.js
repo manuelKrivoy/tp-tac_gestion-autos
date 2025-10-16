@@ -20,7 +20,14 @@ app.use("/admin", adminRoutes);
 // rutas públicas
 app.use("/api", publicRoutes);
 
-const PORT = process.env.PORT;
-app.listen(PORT, () => {
-  console.log(`Servidor corriendo en http://localhost:${PORT}`);
-});
+// 👇 Solo levantá el server si NO estás en tests
+const PORT = process.env.PORT || 3000;
+app.get("/health", (_req, res) => res.status(200).json({ ok: true }));
+if (process.env.NODE_ENV !== "test") {
+  app.listen(PORT, () => {
+    console.log(`Servidor corriendo en http://localhost:${PORT}`);
+  });
+}
+
+// 👇 Exportá app para poder importarlo desde los tests
+export default app;
