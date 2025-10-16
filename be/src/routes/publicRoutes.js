@@ -36,7 +36,7 @@ router.post("/appointments", async (req, res) => {
       },
     });
 
-    res.status(201).json({ message: "Turno creado", verificationCode });
+    res.status(200).json({ message: "Turno creado", verificationCode });
   } catch (err) {
     res.status(500).json({ error: err.message });
   }

@@ -30,7 +30,7 @@ model Vehiculo {
 model Turno {
   id              Int       @unique@id @default(autoincrement())
   vehiculoId      Int
-  fechaTurno      DateTime  @unique
+  fechaTurno      DateTime  
   estado          String    @default("PENDIENTE")
   verificationCode String   @unique
   createdAt       DateTime  @default(now())
@@ -43,7 +43,7 @@ model Revision {
   id        Int      @id @default(autoincrement())
   turnoId   Int      @unique
   notas     String?
-  estado    String   @default("PROGRAMADA")
-  updatedAt DateTime @updatedAt
+  costo     Float   
+  updatedAt DateTime  @default(now())
   turno     Turno    @relation(fields: [turnoId], references: [id])
 }

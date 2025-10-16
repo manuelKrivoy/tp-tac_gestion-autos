@@ -34,7 +34,14 @@ export default function AdminDashboard() {
     api
       .get("/admin/vehiculos")
       .then((res) => setVehiculos(res.data))
-      .catch((err) => setError(err.response?.data?.error || err.message))
+      .catch((err) => {
+        if (err.response?.status === 401 || err.response?.status === 403) {
+          nav("/admin/login");
+        } else {
+          console.log(error.response);
+          setError(err.message);
+        }
+      })
       .finally(() => setLoading(false));
   };
 

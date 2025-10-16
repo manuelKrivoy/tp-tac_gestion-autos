@@ -27,7 +27,7 @@ router.post("/vehiculos", async (req, res) => {
     const vehiculo = await prisma.vehiculo.create({
       data: { marca, modelo, anio, propietarioNombre, propietarioEmail },
     });
-    res.status(201).json(vehiculo);
+    res.status(200).json(vehiculo);
   } catch (err) {
     res.status(500).json({ error: err.message });
   }
@@ -78,6 +78,48 @@ router.delete("/appointments/:id", async (req, res) => {
     const { id } = req.params;
     await prisma.turno.delete({ where: { id: Number(id) } });
     res.json({ message: "Turno eliminado" });
+  } catch (err) {
+    res.status(500).json({ error: err.message });
+  }
+});
+
+// -- REVISIÓN--
+
+router.post("/revision", async (req, res) => {
+  try {
+    const { turnoId, notas } = req.body;
+    const revision = await prisma.revision.create({
+      data: { turnoId, notas, costo },
+    });
+    res.status(200).json(revision);
+  } catch (err) {
+    res.status(500).json({ error: err.message });
+  }
+});
+
+router.get("/revision/:id", async (req, res) => {
+  try {
+    const { id } = req.params;
+    const revision = await prisma.revision.findUnique({
+      where: { id: Number(id) },
+      include: { turno: true },
+    });
+    if (!revision) return res.status(404).json({ error: "Revisión no encontrada" });
+    res.json(revision);
+  } catch (err) {
+    res.status(500).json({ error: err.message });
+  }
+});
+
+router.patch("/revision/:id", async (req, res) => {
+  try {
+    const { id } = req.params;
+    const { notas, costo } = req.body;
+    const revision = await prisma.revision.update({
+      where: { id: Number(id) },
+      data: { notas, costo },
+    });
+    res.json(revision);
   } catch (err) {
     res.status(500).json({ error: err.message });
   }
