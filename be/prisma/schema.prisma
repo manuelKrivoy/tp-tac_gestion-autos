@@ -30,7 +30,7 @@ model Vehiculo {
 model Turno {
   id              Int       @unique@id @default(autoincrement())
   vehiculoId      Int
-  fechaTurno      DateTime
+  fechaTurno      DateTime  @unique
   estado          String    @default("PENDIENTE")
   verificationCode String   @unique
   createdAt       DateTime  @default(now())

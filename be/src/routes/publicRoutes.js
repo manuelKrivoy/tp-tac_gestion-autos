@@ -1,7 +1,6 @@
 import express from "express";
 import { PrismaClient } from "@prisma/client";
 import { randomBytes } from "crypto";
-import serializeTurno from "../utils/time.js";
 
 const prisma = new PrismaClient();
 const router = express.Router();
@@ -46,16 +45,15 @@ router.post("/appointments", async (req, res) => {
 router.get("/appointments/status/:code", async (req, res) => {
   try {
     const { code } = req.params;
-    const tz = req.query.tz || "America/Argentina/Cordoba";
 
-    const turno = await prisma.turno.findUnique({
+    const turno = await prisma.turno.findFirst({
       where: { verificationCode: code },
       include: { vehiculo: true, revision: true },
     });
 
     if (!turno) return res.status(404).json({ error: "Turno no encontrado" });
 
-    return res.json({ data: serializeTurno(turno, tz) });
+    return res.json({ data: turno });
   } catch (err) {
     return res.status(500).json({ error: err.message });
   }

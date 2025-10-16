@@ -2,9 +2,6 @@ FE/BE->
 mejorar CRUD de admin/dashboard
 
 
-FE/BE->
-agregar hora turno / que no pueda haber dos turnos misma hora misma fecha
-
 
 BE->
 agregar ep adicionales

@@ -20,7 +20,7 @@ const MARCAS_MODELOS = {
   Kia: ["K3", "Cerato", "Sportage", "Sorento"],
 };
 
-// Helper para obtener la fecha de hoy en formato YYYY-MM-DD
+// Fecha de hoy YYYY-MM-DD
 function getTodayDateString() {
   const today = new Date();
   const yyyy = today.getFullYear();
@@ -29,14 +29,25 @@ function getTodayDateString() {
   return `${yyyy}-${mm}-${dd}`;
 }
 
+// Construye un ISO UTC a partir de fecha/hora locales del navegador, restando 3 horas.
+function buildIsoUtcFromLocalMinus3(dateStr, timeStr) {
+  const [y, m, d] = dateStr.split("-").map(Number);
+  const [hh, mm] = timeStr.split(":").map(Number);
+  // Restar 3 horas
+  const local = new Date(y, m - 1, d, hh - 3, mm, 0, 0);
+  return local.toISOString();
+}
+
 export default function NuevoTurno() {
   const [form, setForm] = useState({
     marca: "",
     modelo: "",
     anio: "",
+    kms: "",
     propietarioNombre: "",
     propietarioEmail: "",
     fechaTurno: "",
+    horaTurno: "",
     detalle: "",
   });
   const [result, setResult] = useState(null);
@@ -56,14 +67,32 @@ export default function NuevoTurno() {
     e.preventDefault();
     setLoading(true);
     setResult(null);
+
     try {
-      const { data } = await api.post("/api/appointments", {
-        ...form,
+      // Validación simple: minutos en múltiplos de 15
+      const [, mmStr] = (form.horaTurno || ":").split(":");
+      const minutes = Number(mmStr);
+      if (Number.isFinite(minutes) && minutes % 15 !== 0) {
+        setResult({ ok: false, error: "La hora debe estar en intervalos de 15 minutos." });
+        setLoading(false);
+        return;
+      }
+
+      // Convertimos fecha/hora LOCAL -> ISO UTC, restando 3 horas
+      const fechaTurnoIsoUtc = buildIsoUtcFromLocalMinus3(form.fechaTurno, form.horaTurno);
+
+      const payload = {
+        marca: form.marca,
+        modelo: form.modelo,
         anio: Number(form.anio),
-        detalle: form.detalle,
         kms: Number(form.kms),
-        fechaTurno: form.fechaTurno + "T" + form.horaTurno + ":00",
-      });
+        propietarioNombre: form.propietarioNombre,
+        propietarioEmail: form.propietarioEmail,
+        detalle: form.detalle,
+        fechaTurno: fechaTurnoIsoUtc,
+      };
+
+      const { data } = await api.post("/api/appointments", payload);
       setResult({ ok: true, code: data.verificationCode });
     } catch (err) {
       setResult({ ok: false, error: err.response?.data?.error || err.message });
@@ -98,6 +127,7 @@ export default function NuevoTurno() {
               ))}
             </select>
           </div>
+
           <div>
             <label className="text-sm text-gray-600 mb-2 block font-semibold">Modelo</label>
             <select
@@ -116,6 +146,7 @@ export default function NuevoTurno() {
               ))}
             </select>
           </div>
+
           <div>
             <label className="text-sm text-gray-600 mb-2 block font-semibold">Año</label>
             <input
@@ -130,6 +161,7 @@ export default function NuevoTurno() {
               placeholder="Ej: 2020"
             />
           </div>
+
           <div>
             <label className="text-sm text-gray-600 mb-2 block font-semibold">Kms</label>
             <input
@@ -168,9 +200,10 @@ export default function NuevoTurno() {
               value={form.horaTurno}
               min="08:00"
               max="18:00"
-              step="900" // pasos de 15 minutos
+              step="900"
             />
           </div>
+
           <div>
             <label className="text-sm text-gray-600 mb-2 block font-semibold">Nombre</label>
             <input
@@ -182,6 +215,7 @@ export default function NuevoTurno() {
               placeholder="Tu nombre"
             />
           </div>
+
           <div>
             <label className="text-sm text-gray-600 mb-2 block font-semibold">Email</label>
             <input
@@ -195,6 +229,7 @@ export default function NuevoTurno() {
             />
           </div>
         </div>
+
         <div>
           <label className="text-sm text-gray-600 mb-2 block font-semibold">
             Detalle <span className="text-gray-400">(explica qué requiere el auto)</span>
@@ -209,6 +244,7 @@ export default function NuevoTurno() {
             placeholder="Ej: cambio de aceite, etc."
           />
         </div>
+
         <button
           disabled={loading}
           className="w-full inline-flex items-center justify-center px-4 py-2 rounded-lg bg-gradient-to-r from-indigo-600 to-indigo-500 text-white font-semibold hover:from-indigo-500 cursor-pointer hover:to-indigo-400 disabled:opacity-50 transition"

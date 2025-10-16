@@ -71,18 +71,25 @@ export default function EstadoTurno() {
         <div className="bg-white border border-gray-200 rounded-2xl p-6 shadow space-y-3">
           <div className="flex items-center gap-3">
             <span className="inline-flex items-center px-3 py-1 text-sm rounded-full bg-indigo-50 border border-indigo-200 text-indigo-700 font-medium">
-              {data.value.estado}
+              {data.value.data.estado}
             </span>
             <span className="text-sm text-gray-500">
               Código: <span className="font-mono">{code}</span>
             </span>
           </div>
+
           <p className="text-gray-700">
-            <b className="text-indigo-600">Fecha:</b> {data.value.fecha}
+            <b className="text-indigo-600">Fecha:</b>{" "}
+            {data.value.data.fechaTurno
+              ? `${data.value.data.fechaTurno.split("T")[0]?.slice(0, 10)} a las ${data.value.data.fechaTurno
+                  .split("T")[1]
+                  ?.slice(0, 5)}`
+              : "No disponible"}
           </p>
           <p className="text-gray-700">
-            <b className="text-indigo-600">Vehículo:</b> {data.value.vehiculo.marca} {data.value.vehiculo.modelo} (
-            {data.value.vehiculo.anio})
+            <b className="text-indigo-600">Vehículo:</b> {data.value.data.vehiculo.marca || "Marca desconocida"}{" "}
+            {data.value.data.vehiculo.modelo || "Modelo desconocido"} (
+            {data.value.data.vehiculo.anio || "Año desconocido"})
           </p>
         </div>
       )}

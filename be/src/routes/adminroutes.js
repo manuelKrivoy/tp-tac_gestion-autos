@@ -1,7 +1,6 @@
 import express from "express";
 import { PrismaClient } from "@prisma/client";
 import { authMiddleware } from "../middleware/auth.js";
-import serializeTurno from "../utils/time.js";
 
 const prisma = new PrismaClient();
 const router = express.Router();
@@ -46,7 +45,10 @@ router.get("/appointments", async (req, res) => {
       orderBy: { fechaTurno: "desc" },
     });
 
-    const data = turnos.map((t) => serializeTurno(t, tz));
+    const data = turnos.map((t) => ({
+      ...t,
+      tz,
+    }));
     return res.json({ data, count: data.length });
   } catch (err) {
     return res.status(500).json({ error: err.message });
