@@ -202,6 +202,7 @@ export default function AdminDashboard() {
                     <div className="font-bold text-xl text-gray-800 flex items-center gap-2">
                       {v.marca} <span className="font-normal">{v.modelo}</span>
                       <span className="text-gray-400">({v.anio})</span>
+                      <span className="text-sm text-gray-500">· {v.kms} km</span>
                     </div>
                     <div className="text-sm text-gray-500">
                       <span className="font-medium">{v.propietarioNombre}</span> · {v.propietarioEmail}
@@ -210,7 +211,7 @@ export default function AdminDashboard() {
                 </div>
                 {v.turnos && v.turnos.length > 0 ? (
                   <div className={`mt-2 rounded-xl p-4 border shadow-sm ${turnoBg(v.turnos[0].fechaTurno)}`}>
-                    <div className="flex justify-between items-center mb-2">
+                    <div className="flex items-center justify-between mb-3">
                       <div className="text-indigo-700 font-semibold text-base">Próximo turno:</div>
                       <div className="flex gap-2 items-center relative">
                         <button
@@ -277,8 +278,13 @@ export default function AdminDashboard() {
                     <div className="grid grid-cols-2 gap-2 text-sm text-indigo-700">
                       <div>
                         <span className="font-semibold">Fecha:</span>{" "}
-                        {new Date(v.turnos[0].fechaTurno).toLocaleDateString()}
+                        {v.turnos[0].fechaTurno.split("T")[0].slice(0, 10)}
                       </div>
+                      <div>
+                        <span className="font-semibold">Hora:</span>{" "}
+                        <span className="font-bold">{v.turnos[0].fechaTurno.split("T")[1]?.slice(0, 5)}</span>
+                      </div>
+
                       <div>
                         <span className="font-semibold">Estado:</span>{" "}
                         <span className="font-bold">{v.turnos[0].estado}</span>

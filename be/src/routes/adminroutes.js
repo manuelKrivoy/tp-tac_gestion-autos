@@ -1,6 +1,7 @@
 import express from "express";
 import { PrismaClient } from "@prisma/client";
 import { authMiddleware } from "../middleware/auth.js";
+import serializeTurno from "../utils/time.js";
 
 const prisma = new PrismaClient();
 const router = express.Router();
@@ -38,12 +39,17 @@ router.post("/vehiculos", async (req, res) => {
 // Listar todos los turnos
 router.get("/appointments", async (req, res) => {
   try {
+    const tz = req.query.tz || "America/Argentina/Cordoba";
+
     const turnos = await prisma.turno.findMany({
       include: { vehiculo: true, revision: true },
+      orderBy: { fechaTurno: "desc" },
     });
-    res.json(turnos);
+
+    const data = turnos.map((t) => serializeTurno(t, tz));
+    return res.json({ data, count: data.length });
   } catch (err) {
-    res.status(500).json({ error: err.message });
+    return res.status(500).json({ error: err.message });
   }
 });
 

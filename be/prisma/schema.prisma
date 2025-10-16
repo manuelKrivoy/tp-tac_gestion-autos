@@ -20,6 +20,7 @@ model Vehiculo {
   marca            String
   modelo           String
   anio             Int
+  kms              Int?
   propietarioNombre String
   propietarioEmail  String
   createdAt        DateTime  @default(now())

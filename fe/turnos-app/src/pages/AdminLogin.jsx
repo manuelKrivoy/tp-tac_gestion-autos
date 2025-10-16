@@ -1,12 +1,26 @@
 import { useState } from "react";
 import api from "../services/api";
 import { useNavigate } from "react-router-dom";
+import { useEffect } from "react";
 
 export default function AdminLogin() {
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
   const [msg, setMsg] = useState(null);
   const nav = useNavigate();
+
+  useEffect(() => {
+    iflogin();
+    // eslint-disable-next-line
+  }, [nav]);
+
+  const iflogin = () => {
+    const token = localStorage.getItem("jwtToken");
+    if (token) {
+      nav("/admin/dashboard");
+      return;
+    }
+  };
 
   const onSubmit = async (e) => {
     e.preventDefault();

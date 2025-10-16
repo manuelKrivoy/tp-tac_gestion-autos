@@ -61,6 +61,8 @@ export default function NuevoTurno() {
         ...form,
         anio: Number(form.anio),
         detalle: form.detalle,
+        kms: Number(form.kms),
+        fechaTurno: form.fechaTurno + "T" + form.horaTurno + ":00",
       });
       setResult({ ok: true, code: data.verificationCode });
     } catch (err) {
@@ -129,6 +131,20 @@ export default function NuevoTurno() {
             />
           </div>
           <div>
+            <label className="text-sm text-gray-600 mb-2 block font-semibold">Kms</label>
+            <input
+              name="kms"
+              type="number"
+              className="w-full border-gray-300 rounded-lg shadow focus:border-indigo-500 focus:ring-indigo-500 px-3 py-2 transition"
+              onChange={onChange}
+              required
+              value={form.kms}
+              min={0}
+              placeholder="Ej: 150000"
+            />
+          </div>
+
+          <div>
             <label className="text-sm text-gray-600 mb-2 block font-semibold">Fecha</label>
             <input
               name="fechaTurno"
@@ -138,6 +154,21 @@ export default function NuevoTurno() {
               required
               value={form.fechaTurno}
               min={minDate}
+            />
+          </div>
+
+          <div>
+            <label className="text-sm text-gray-600 mb-2 block font-semibold">Hora</label>
+            <input
+              name="horaTurno"
+              type="time"
+              className="w-full border-gray-300 rounded-lg shadow focus:border-indigo-500 focus:ring-indigo-500 px-3 py-2 transition"
+              onChange={onChange}
+              required
+              value={form.horaTurno}
+              min="08:00"
+              max="18:00"
+              step="900" // pasos de 15 minutos
             />
           </div>
           <div>

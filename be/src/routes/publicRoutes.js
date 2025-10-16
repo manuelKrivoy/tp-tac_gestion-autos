@@ -1,17 +1,27 @@
 import express from "express";
 import { PrismaClient } from "@prisma/client";
 import { randomBytes } from "crypto";
+import serializeTurno from "../utils/time.js";
 
 const prisma = new PrismaClient();
 const router = express.Router();
 
 router.post("/appointments", async (req, res) => {
   try {
-    const { marca, modelo, anio, propietarioNombre, propietarioEmail, fechaTurno, detalle } = req.body;
+    const { marca, modelo, anio, propietarioNombre, propietarioEmail, fechaTurno, detalle, kms } = req.body;
+
+    // Validar si ya existe un turno en la misma fecha y hora
+    const existingTurno = await prisma.turno.findFirst({
+      where: { fechaTurno: new Date(fechaTurno) },
+    });
+
+    if (existingTurno) {
+      return res.status(409).json({ error: "Ya existe un turno para esa fecha y hora" });
+    }
 
     // 1. Crear vehículo
     const vehiculo = await prisma.vehiculo.create({
-      data: { marca, modelo, anio, propietarioNombre, propietarioEmail },
+      data: { marca, modelo, anio, propietarioNombre, propietarioEmail, kms },
     });
 
     // 2. Generar código de verificación
@@ -36,6 +46,8 @@ router.post("/appointments", async (req, res) => {
 router.get("/appointments/status/:code", async (req, res) => {
   try {
     const { code } = req.params;
+    const tz = req.query.tz || "America/Argentina/Cordoba";
+
     const turno = await prisma.turno.findUnique({
       where: { verificationCode: code },
       include: { vehiculo: true, revision: true },
@@ -43,14 +55,9 @@ router.get("/appointments/status/:code", async (req, res) => {
 
     if (!turno) return res.status(404).json({ error: "Turno no encontrado" });
 
-    res.json({
-      vehiculo: turno.vehiculo,
-      estado: turno.estado,
-      fecha: turno.fechaTurno,
-      revision: turno.revision || null,
-    });
+    return res.json({ data: serializeTurno(turno, tz) });
   } catch (err) {
-    res.status(500).json({ error: err.message });
+    return res.status(500).json({ error: err.message });
   }
 });
 

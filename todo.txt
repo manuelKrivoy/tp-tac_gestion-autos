@@ -1,7 +1,3 @@
-FE->
- mejorar admin FE -> sacar opcion volver, que rediriga al admin/dashboard si ya estas logeado y vas a admin/login
-
-
 FE/BE->
 mejorar CRUD de admin/dashboard
 
