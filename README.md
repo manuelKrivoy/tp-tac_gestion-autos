@@ -128,22 +128,13 @@ tp-tac_gestion-autos/
     └── [Interfaz de usuario]
 ```
 
-## 🧪 Cómo correr los tests del Backend
+## 🚀 Despliegue
 
-Para ejecutar los tests automáticos del backend (`be/`), sigue estos pasos:
+- Frontend (fe/): desplegado en Vercel. Vercel es una plataforma de hosting optimizada para frontends estáticos y aplicaciones JAMstack, con CDN integrada, previews por merge request y despliegues automáticos desde repositorios Git. Sitio oficial: https://vercel.com. App pública: https://tp-tac-gestion-autos.vercel.app/
 
-1. Instala las dependencias:
-   ```bash
-   cd be
-   npm install
-   ```
-2. Ejecuta los tests:
-   ```bash
-   npm test
-   ```
-   o, si usas otro comando (por ejemplo, con Jest):
-   ```bash
-   npm run test
-   ```
+- Backend (be/): desplegado en Render. Render es un PaaS que permite alojar APIs, servicios y bases de datos con despliegues automáticos desde Git, gestión de variables de entorno y escalado de servicios. Sitio oficial: https://render.com. API pública: https://api-tp-tac-gestion-autos.onrender.com/
 
-Asegúrate de tener configuradas las variables de entorno necesarias en `be/.env` antes de correr los tests. Los resultados se mostrarán en la terminal.
+Notas rápidas:
+
+- Asegurarse de configurar las variables de entorno en Render (DB, JWT_SECRET, etc.).
+- Los despliegues están vinculados a las carpetas /fe y /be del repositorio para facilitar integración continua.
