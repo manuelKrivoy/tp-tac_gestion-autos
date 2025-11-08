@@ -127,3 +127,23 @@ tp-tac_gestion-autos/
 └── 🎨 fe/                   # Frontend
     └── [Interfaz de usuario]
 ```
+
+## 🧪 Cómo correr los tests del Backend
+
+Para ejecutar los tests automáticos del backend (`be/`), sigue estos pasos:
+
+1. Instala las dependencias:
+   ```bash
+   cd be
+   npm install
+   ```
+2. Ejecuta los tests:
+   ```bash
+   npm test
+   ```
+   o, si usas otro comando (por ejemplo, con Jest):
+   ```bash
+   npm run test
+   ```
+
+Asegúrate de tener configuradas las variables de entorno necesarias en `be/.env` antes de correr los tests. Los resultados se mostrarán en la terminal.

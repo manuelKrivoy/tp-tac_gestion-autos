@@ -45,7 +45,6 @@ router.post("/appointments", async (req, res) => {
 router.get("/appointments/status/:code", async (req, res) => {
   try {
     const { code } = req.params;
-
     const turno = await prisma.turno.findFirst({
       where: { verificationCode: code },
       include: { vehiculo: true, revision: true },
