@@ -3,7 +3,7 @@ import api from "../services/api";
 import { useNavigate } from "react-router-dom";
 
 // Función para obtener imagen de marca
-const getMarcaImg = (marca) => `https://logo.clearbit.com/${marca.toLowerCase()}.com`;
+const getMarcaImg = (marca) => `https://img.logo.dev/${marca.toLowerCase()}.com?token=pk_WBweh_THSO6hB8UHf-jJXA`;
 
 const ESTADOS = ["PENDIENTE", "COMPLETADO", "CANCELADO"];
 
