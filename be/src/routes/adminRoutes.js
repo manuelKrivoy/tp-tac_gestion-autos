@@ -87,7 +87,7 @@ router.delete("/appointments/:id", async (req, res) => {
 
 router.post("/revision", async (req, res) => {
   try {
-    const { turnoId, notas } = req.body;
+    const { turnoId, notas, costo } = req.body;
     const revision = await prisma.revision.create({
       data: { turnoId, notas, costo },
     });
