@@ -84,7 +84,7 @@ export default function AdminDashboard() {
     const hoy = new Date();
     hoy.setHours(0, 0, 0, 0);
     const diff = (hoy - fecha) / (1000 * 60 * 60 * 24); // días
-    if (diff > 21) return "bg-gradient-to-r from-red-700 to-red-400 text-white";
+    if (diff > 21) return "bg-gradient-to-r from-red-700 to-red-400 ";
     if (diff > 0) return "bg-gradient-to-r from-red-100 to-red-50 border-red-300";
     return "bg-gradient-to-r from-indigo-50 to-blue-50 border-indigo-100";
   };
